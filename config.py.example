@@ -1,0 +1,13 @@
+ACCOUNTS = [
+    {
+        'API_KEY': 'API_KEY_1',  # Replace with your actual API key for account 1
+        'ACCOUNT_ID': 'ACCOUNT_ID_1',  # Replace with your actual account ID for account 1
+        'ENTITY_DOMAINS': ['APM', 'NR1', 'BROWSER', 'INFRA', 'MOBILE', 'SYNTH', 'WORKLOAD']  # Entity types to process for this account
+    },
+    {
+        'API_KEY': 'API_KEY_2',  # Replace with your actual API key for account 2
+        'ACCOUNT_ID': 'ACCOUNT_ID_2',  # Replace with your actual account ID for account 2
+    },
+    # Add more accounts as needed
+]
+
