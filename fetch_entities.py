@@ -198,6 +198,6 @@ def main(max_threads=1):  # Default to 1 threads if not specified
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Fetch entities from New Relic NerdGraph API.")
-    parser.add_argument('--max_threads', type=int, default=5, help='Maximum number of threads to use (default: 5)')
+    parser.add_argument('--max_threads', type=int, default=1, help='Maximum number of threads to use (default: 5)')
     args = parser.parse_args()
     main(max_threads=args.max_threads)
