@@ -1,4 +1,4 @@
-# `fetch_entities.py` - New Relic Entity Fetcher
+# `fetch_entities.py` - Multi-Threaded New Relic Entity Fetcher
 
 This Python program fetches entities from New Relic accounts using the NerdGraph API. It supports fetching entities from multiple accounts, filtering by entity `domains`, and outputting the results to text and CSV files. It also includes progress bars for a better user experience for longer running jobs.
 

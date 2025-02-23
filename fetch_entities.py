@@ -1,12 +1,23 @@
 import requests
 import csv
 import time
+import os
+import glob
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from config import ACCOUNTS
 
 # NerdGraph API endpoint
 NERDGRAPH_URL = 'https://api.newrelic.com/graphql'
+
+# Function to delete all .txt files before starting
+def delete_txt_files():
+    for file in glob.glob("entities_*.txt"):
+        try:
+            os.remove(file)
+            print(f"Deleted {file}")
+        except Exception as e:
+            print(f"Error deleting {file}: {e}")
 
 # GraphQL query to fetch entities with pagination
 def get_entities_query(account_id, entity_domains=None, cursor=None):
@@ -88,9 +99,9 @@ def fetch_all_entities(api_key, account_id, entity_domains=None):
     
     return account_id, all_entities
 
-# Function to write entities to a text file
+# Function to write entities to a text file in append mode
 def write_entities_to_txt(entities, filename):
-    with open(filename, 'w', encoding='utf-8') as file:
+    with open(filename, 'a', encoding='utf-8') as file:  # Open in append mode
         for entity in tqdm(entities, desc=f"Writing to {filename}", unit="entity"):
             file.write(f"GUID: {entity['guid']}\n")
             file.write(f"Name: {entity['name']}\n")
@@ -139,6 +150,9 @@ def main(max_threads=1):  # Default to 1 threads if not specified
     entity_types_set = set()
     global_entity_type_counts = {}  # Dictionary to store global entity counts by type
     
+    # Delete all .txt files before starting
+    delete_txt_files()
+    
     # Fetch entities for all accounts in parallel
     with ThreadPoolExecutor(max_workers=max_threads) as executor:  # Use max_threads here
         futures = [executor.submit(fetch_all_entities, account['API_KEY'], account['ACCOUNT_ID'], account.get('ENTITY_DOMAINS')) for account in ACCOUNTS]
@@ -150,7 +164,7 @@ def main(max_threads=1):  # Default to 1 threads if not specified
                 entity['accountId'] = account_id
                 entity_types_set.add((entity['domain'], entity['entityType']))
             
-            # Write entities for this account to a separate text file
+            # Write entities for this account to a separate text file in append mode
             write_entities_to_txt(entities, f'entities_{account_id}.txt')
             
             # Calculate entity counts by type for this account
