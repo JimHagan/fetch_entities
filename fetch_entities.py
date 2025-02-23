@@ -12,7 +12,7 @@ NERDGRAPH_URL = 'https://api.newrelic.com/graphql'
 
 # Function to delete all .txt files before starting
 def delete_txt_files():
-    for file in glob.glob("entities_*.txt"):
+    for file in glob.glob("entities*.txt"):
         try:
             os.remove(file)
             print(f"Deleted {file}")
