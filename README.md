@@ -1,6 +1,6 @@
 # `fetch_entities.py` - New Relic Entity Fetcher
 
-This Python script fetches entities from New Relic accounts using the NerdGraph API. It supports fetching entities from multiple accounts, filtering by entity types, and outputting the results to text and CSV files. It also includes progress bars for a better user experience.
+This Python program fetches entities from New Relic accounts using the NerdGraph API. It supports fetching entities from multiple accounts, filtering by entity `domains`, and outputting the results to text and CSV files. It also includes progress bars for a better user experience for longer running jobs.
 
 ---
 
@@ -9,7 +9,7 @@ This Python script fetches entities from New Relic accounts using the NerdGraph 
 2. [Setup](#setup)
 3. [Building the Virtual Environment](#building-the-virtual-environment)
 4. [Configuration](#configuration)
-5. [Running the Script](#running-the-script)
+5. [Running the program](#running-the-program)
 6. [Output Files](#output-files)
 7. [Example Screen Output](#example-screen-output)
 8. [Troubleshooting](#troubleshooting)
@@ -18,9 +18,9 @@ This Python script fetches entities from New Relic accounts using the NerdGraph 
 
 ## Prerequisites
 
-Before using this script, ensure you have the following:
+Before using this program, ensure you have the following:
 
-1. **Python 3.6 or higher**: The script is written in Python and requires a compatible version.
+1. **Python 3.6 or higher**: The program is written in Python and requires a compatible version.
 2. **New Relic API Key**: You need a New Relic API key with permissions to query entities.
 3. **Account IDs**: The New Relic account IDs from which you want to fetch entities.
 
@@ -28,7 +28,7 @@ Before using this script, ensure you have the following:
 
 ## Setup
 
-1. Clone or download the script to your local machine.
+1. Clone or download the repo to your local machine.
 2. Build the Python virtual environment using the provided `dependencies.txt` file (see below).
 
 ---
@@ -43,7 +43,7 @@ To ensure you have all the required dependencies, you can build a Python virtual
    ```bash
    cd path/to/project
 
-2. Create a virtual environment
+2. Create a virtual environment named venv
 
 ```
 python -m venv venv
@@ -63,9 +63,7 @@ pip install -r dependencies.txt
 
 ## Configuration
 
-1. 
-
-The `config.py` file is used to configure the accounts and entity types to fetch. Here's an example:
+1. The `config.py` file is used to configure the accounts and entity `domains` to fetch. Here's an example:
 
 ```
 # config.py
@@ -73,13 +71,18 @@ ACCOUNTS = [
     {
         'API_KEY': 'YOUR_API_KEY_1',  # Replace with your actual API key
         'ACCOUNT_ID': 'YOUR_ACCOUNT_ID_1',  # Replace with your actual account ID
-        'ENTITY_DOMAINS': ['APM', 'BROWSER']  # Optional: List of entity types to fetch
+        'ENTITY_DOMAINS': ['APM', 'BROWSER']  # Optional: List of domains
     },
     {
         'API_KEY': 'YOUR_API_KEY_2',  # Replace with your actual API key
         'ACCOUNT_ID': 'YOUR_ACCOUNT_ID_2',  # Replace with your actual account ID
+        'ENTITY_DOMAINS': ['INFRA', 'SYNTH'] # Optional: List of domains
+    },
+    {
+        'API_KEY': 'YOUR_API_KEY_3',  # Replace with your actual API key
+        'ACCOUNT_ID': 'YOUR_ACCOUNT_ID_3',  # Replace with your actual account ID
         # No ENTITY_DOMAINS specified: Fetch all entities in the account
-    }
+    }    
 ]
 ```
 
@@ -87,11 +90,11 @@ Fields:
 
 - API_KEY: Your New Relic API key.
 - ACCOUNT_ID: The New Relic account ID.
-- ENTITY_DOMAINS: (Optional) A list of entity types to fetch (e.g., ['APM', 'BROWSER']). If not provided, the script fetches all entities in the account.
+- ENTITY_DOMAINS: (Optional) A list of entity types to fetch (e.g., ['APM', 'BROWSER']). If not provided, the program fetches all entities in the account.
+APM
+## Running the program
 
-## Running the script
-
-To run the script, use the following command:
+To run the program make sure your virtualenv is activated and use the following command:
 
 
 ```
@@ -100,12 +103,14 @@ python fetch_entities.py
 
 What Happens:
 
-1. The script reads the configuration from config.py.
-2. It fetches entities from each account, using pagination to handle large datasets.
+1. The program reads the configuration from config.py.
+2. It fetches entities from each account, using `pagination` to handle large datasets.
+3. The program will use as many threads as you specify (see below for details)
 4. Progress bars show the fetching and writing progress.
 5. Output files are created in the same directory.
 
-*TIP*  It is possible to optimize the run by setting the `max_threads` parameter.
+### Optimizing with more threads
+It is possible to optimize the run by setting the `max_threads` parameter.
 
 By default this is set to `1` however the following example would set it to `2` so if you are running it against 2 accounts it will process both simultaneously.
 
@@ -118,38 +123,46 @@ Be aware that the API may subject the client to some rate limiting so don't over
 
 ### Output Files
 
-The script generates the following output files:
+The program generates the following output files:
 
-`entities.txt`:
+1. `entities.txt`:
 
 Contains all entities from all accounts in a human-readable format.
 
 Example:
 
 ```
-GUID: ABC123
-Name: My Application
-Type: APM
+GUID: f315487c9b0244f3879bdbb4eb9d5246
+Name: Ad Service4120837
+Type: APM_APPLICATION_ENTITY
 Domain: APM
 Tags:
-  environment: [production]
-  team: [devops]
+  account: ['Advertising Account (PROD)']
+  accountId: ['12345']
+  agentVersion: ['8.16.0']
+  built_by: ['terraform']
+  feature: ['threads']
+  instrumentation.name: ['apm']
+  instrumentation.provider: ['newRelic']
+  k8s.clusterName: ['Ad Cluster']
+  k8s.deploymentName: ['microservicesdemo-adservice']
+  k8s.namespaceName: ['microservicesdemo']
+  language: ['java']
 ----------------------------------------
 ```
 
-`entities_[account_id].txt`:
+2. `entities_[account_id].txt`:
 
-Contains entities in the same format of `entities.txt` but broken out by account.
+Contains fetched entities in the same format of `entities.txt` but broken out by account.
 
 
-
-`entities.csv`:
+3. `entities.csv`:
 
 Contains all entities in CSV format, with columns for GUID, Name, Type, Domain, and tags.
 
 Example Screen Output
 
-When you run the script, you'll see progress bars and summaries like this:
+When you run the program, you'll see progress bars and summaries like this:
 
 ```
 Fetching entities for account 12345 (Total: 25): 100%|████████████████████| 5/5 [00:10<00:00,  2.00s/page]
@@ -202,10 +215,10 @@ If no ENTITY_DOMAINS are specified, ensure the account has entities.
 
 #### Pagination Issues:
 
-If the script stops prematurely, check the API response for errors.
+If the program stops prematurely, check the API response for errors.
 
 ### License
-This script is provided under the MIT License. Feel free to modify and distribute it as needed.
+This program is provided under the MIT License. Feel free to modify and distribute it as needed.
 
 For questions or issues, please open an issue on GitHub or contact the author. Happy fetching! 😊
 

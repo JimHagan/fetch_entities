@@ -1,3 +1,6 @@
+# That that threading will allow multiple accounts to be processed in parallel.  Also its
+# Possible to configure the same account more than once with different domain sets.  For example
+# You coud process the `APM` domain and the `INFRA` domains in parallel for the same account.
 ACCOUNTS = [
     {
         'API_KEY': 'API_KEY_1',  # Replace with your actual API key for account 1

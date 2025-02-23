@@ -190,6 +190,10 @@ def main(max_threads=1):  # Default to 1 threads if not specified
             writer.writerow({'domain': domain, 'entityType': entity_type})
     print(f"Domain and entity type pairs have been written to 'entity_types.csv'.")
     
+    # Write all entities to a single text file
+    write_entities_to_txt(all_entities, 'entities.txt')
+    print(f"All entities have been written to 'entities.txt'.")
+    
     # Print global summary of entity counts by type across all accounts
     print("\nGlobal Entity Counts by Type (All Accounts):")
     for entity_type, count in global_entity_type_counts.items():
