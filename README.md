@@ -170,7 +170,7 @@ Deleted entities_123.txt
 Deleted entities_234.txt
 
 Fetching entities for account 123 (ACME Prod) (Total: 915): [00:07,  1.44s/page]
-Writing to entities_123.txt
+Writing to entities_123.txt: 100%
 
 Entity Counts by Type for account 123:
 GENERIC_INFRASTRUCTURE_ENTITY: 796
