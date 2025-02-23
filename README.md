@@ -160,37 +160,60 @@ Contains fetched entities in the same format of `entities.txt` but broken out by
 
 Contains all entities in CSV format, with columns for GUID, Name, Type, Domain, and tags.
 
-Example Screen Output
+### Example Screen Output
 
 When you run the program, you'll see progress bars and summaries like this:
 
 ```
-Fetching entities for account 12345 (Total: 25): 100%|████████████████████| 5/5 [00:10<00:00,  2.00s/page]
-Writing to entities_12345.txt: 100%|████████████████████| 25/25 [00:02<00:00, 10.00entity/s]
-Fetching entities for account 67890 (Total: 10): 100%|████████████████████| 3/3 [00:06<00:00,  2.00s/page]
-Writing to entities_67890.txt: 100%|████████████████████| 10/10 [00:01<00:00, 10.00entity/s]
-Writing to entities.txt: 100%|████████████████████| 35/35 [00:03<00:00, 10.00entity/s]
-Writing to entities.csv: 100%|████████████████████| 35/35 [00:03<00:00, 10.00entity/s]
+Deleted entities.txt
+Deleted entities_123.txt
+Deleted entities_234.txt
 
-Entity Counts by Type for account 12345:
-APM: 12
-BROWSER: 5
-INFRA: 8
-Total entities fetched for account 12345: 25
+Fetching entities for account 123 (ACME Prod) (Total: 915): [00:07,  1.44s/page]
+Writing to entities_123.txt
 
-Entity Counts by Type for account 67890:
-MOBILE: 3
-SYNTH: 7
-Total entities fetched for account 67890: 10
+Entity Counts by Type for account 123:
+GENERIC_INFRASTRUCTURE_ENTITY: 796
+SYNTHETIC_MONITOR_ENTITY: 10
+SECURE_CREDENTIAL_ENTITY: 6
+APM_APPLICATION_ENTITY: 19
+WORKLOAD_ENTITY: 15
+INFRASTRUCTURE_AWS_LAMBDA_FUNCTION_ENTITY: 3
+INFRASTRUCTURE_HOST_ENTITY: 65
+BROWSER_APPLICATION_ENTITY: 1
+Total entities fetched for account 123: 915
 
-All entities have been written to 'entities.txt' and 'entities.csv'.
+Fetching entities for account 234 (ACME DEV) (Total: 1418): [00:11,  1.46s/page]
+Writing to entities_234.txt: 100%
+
+Entity Counts by Type for account 234:
+WORKLOAD_ENTITY: 240
+GENERIC_INFRASTRUCTURE_ENTITY: 943
+SYNTHETIC_MONITOR_ENTITY: 65
+SECURE_CREDENTIAL_ENTITY: 9
+MOBILE_APPLICATION_ENTITY: 7
+GENERIC_ENTITY: 21
+APM_APPLICATION_ENTITY: 48
+BROWSER_APPLICATION_ENTITY: 6
+INFRASTRUCTURE_HOST_ENTITY: 71
+INFRASTRUCTURE_AWS_LAMBDA_FUNCTION_ENTITY: 8
+Total entities fetched for account 234: 1418
+
+Writing to entities.csv: 100%
+Domain and entity type pairs have been written to 'entity_types.csv'.
+Writing to entities.txt: 100%
 
 Global Entity Counts by Type (All Accounts):
-APM: 12
-BROWSER: 5
-INFRA: 8
-MOBILE: 3
-SYNTH: 7
+GENERIC_INFRASTRUCTURE_ENTITY: 1739
+SYNTHETIC_MONITOR_ENTITY: 75
+SECURE_CREDENTIAL_ENTITY: 15
+APM_APPLICATION_ENTITY: 67
+WORKLOAD_ENTITY: 255
+INFRASTRUCTURE_AWS_LAMBDA_FUNCTION_ENTITY: 11
+INFRASTRUCTURE_HOST_ENTITY: 136
+BROWSER_APPLICATION_ENTITY: 7
+MOBILE_APPLICATION_ENTITY: 7
+GENERIC_ENTITY: 21
 ```
 
 
